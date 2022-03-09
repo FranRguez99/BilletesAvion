@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class PuntoVentaBilletes2 {
+public class PuntoVentaBilletes {
     public void interfaz() {
         JFrame ventanaPrincipal = new JFrame("Adivina el resultado de la suma");
         ventanaPrincipal.setSize(700, 250);
