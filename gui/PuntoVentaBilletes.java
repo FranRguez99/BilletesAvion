@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class PuntoVentaBilletes {
 
@@ -14,94 +15,80 @@ public class PuntoVentaBilletes {
         ventanaPrincipal.setLayout(new BorderLayout());
 
         //Crea los paneles
-        JPanel pPuntoDeVenta = new JPanel();
-        pPuntoDeVenta.setAlignmentX(0);
-        JPanel pDetalles = new JPanel();
-        JPanel pTrayecto = new JPanel();
+        JPanel pGeneral = new JPanel();
+        Border bGeneral = BorderFactory.createEmptyBorder(20, 20, 20, 20);
+        pGeneral.setBorder(bGeneral);
+        JPanel pPrincipal1 = new JPanel();
+        pPrincipal1.setLayout(new BorderLayout());
 
+        // PANEL PRINCIPAL 1
+
+        // Sección Titulo
+        JPanel pTitulo = new JPanel();
+        pTitulo.setAlignmentX(0);
+        JLabel etiVentaBilletes = new JLabel("PUNTO DE VENTA DE BILLETES");
+        pTitulo.add(etiVentaBilletes);
+
+        // Sección Detalles
+        // Crea los paneles
+        JPanel pDetalles = new JPanel(); // Panel Detalles
         GridLayout experimentLayout = new GridLayout(0, 1);
         pDetalles.setLayout(experimentLayout);
+        JPanel pModalidad = new JPanel(); // Panel Modalidad
+        Border modalidadInterior = BorderFactory.createEmptyBorder(0, 80, 0, 80);
+        Border modalidadExterior = BorderFactory.createTitledBorder(null, "Modalidad", TitledBorder.CENTER, TitledBorder.TOP);
+        Border bModalidad = BorderFactory.createCompoundBorder(modalidadExterior, modalidadInterior);
+        pModalidad.setBorder(bModalidad);
+        JPanel pFechaIda = new JPanel(); // Panel Fecha Ida
+        JPanel pFechaVuelta = new JPanel(); // Panel Ida Vuelta
 
-        //Seccion Detalles
-        JPanel pModalidad = new JPanel();
-        JPanel pFechaIda = new JPanel();
-        JPanel pFechaVuelta = new JPanel();
+        // Contenido de los paneles
+        // Panel Modalidad
+        JRadioButton rbIda = new JRadioButton("Ida sólo");
+        JRadioButton rbIdaVuelta = new JRadioButton("Ida/Vuelta");
+        pModalidad.add(rbIda);
+        pModalidad.add(rbIdaVuelta);
+
+        // Panel Ida
+
+        spinnerFecha(pFechaIda);
+        TitledBorder bordeMIda = BorderFactory.createTitledBorder("Fecha ida");
+        pFechaIda.setBorder(bordeMIda);
+
+        // Panel Vuelta
+        spinnerFecha(pFechaVuelta);
+        TitledBorder bordeVuelta = BorderFactory.createTitledBorder("Fecha vuelta");
+        pFechaVuelta.setBorder(bordeVuelta);
+
+        // Panel Detalles
         pDetalles.add(pModalidad);
         pDetalles.add(pFechaIda);
         pDetalles.add(pFechaVuelta);
 
-        //Seccion Ida y Vuelta
-
-        JRadioButton opcion1 = new JRadioButton("Ida Solo");
-        JRadioButton opcion2 = new JRadioButton("Ida/Vuelta");
-        pModalidad.add(opcion1);
-        pModalidad.add(opcion2);
-        TitledBorder bordeModalidad = BorderFactory.createTitledBorder("Modalidad");
-        bordeModalidad.setTitleJustification(TitledBorder.CENTER);
-        pModalidad.setBorder(bordeModalidad);
-        pModalidad.setSize(15, 15);
-
-        //Fecha ida
-        TitledBorder bordeMIda = BorderFactory.createTitledBorder("Fecha ida");
-        pFechaIda.setBorder(bordeMIda);
-        pFechaIda.setSize(15, 15);
-        //Fecha vuelta
-        TitledBorder bordeVuelta = BorderFactory.createTitledBorder("Fecha vuelta");
-        bordeMIda.setTitleJustification(TitledBorder.CENTER);
-        pFechaVuelta.setBorder(bordeVuelta);
-        pFechaVuelta.setSize(15, 15);
-
-
-        JLabel DiaIda = new JLabel("Día");
-        JSpinner diasIda = new JSpinner();
-        JLabel mesIda = new JLabel("Mes");
-        JSpinner mesesIda = new JSpinner();
-        JLabel anioIda = new JLabel("Año");
-        JSpinner aniosIda = new JSpinner();
-
-        //añade elementos al panel Ida
-        pFechaIda.add(DiaIda);
-        pFechaIda.add(diasIda);
-        pFechaIda.add(mesIda);
-        pFechaIda.add(mesesIda);
-        pFechaIda.add(anioIda);
-        pFechaIda.add(aniosIda);
-
-        //** añade elementos al panel vuelta
-
-        JLabel DiaV = new JLabel("Día");
-        JSpinner diasV = new JSpinner();
-        JLabel mesV = new JLabel("Mes");
-        JSpinner mesesV = new JSpinner();
-        JLabel anioV = new JLabel("Año");
-        JSpinner aniosV = new JSpinner();
-
-        pFechaVuelta.add(DiaV);
-        pFechaVuelta.add(diasV);
-        pFechaVuelta.add(mesV);
-        pFechaVuelta.add(mesesV);
-        pFechaVuelta.add(anioV);
-        pFechaVuelta.add(aniosV);
-
         // Sección Trayecto
-        // Crea los paneles este
-        JPanel pTrayecto=new JPanel();
-        JPanel pOrigen = new JPanel();
+        // Crea los paneles
+        JPanel pTrayecto = new JPanel(); // Panel Trayecto
+        Border trayectoInterior = BorderFactory.createEmptyBorder(0, 50, 0, 50);
+        Border trayectoExterior = BorderFactory.createTitledBorder(null, "Trayecto", TitledBorder.CENTER, TitledBorder.TOP);
+        Border bTrayecto = BorderFactory.createCompoundBorder(trayectoExterior, trayectoInterior);
+        pTrayecto.setBorder(bTrayecto);
+        pTrayecto.setLayout(new BorderLayout());
+        JPanel pOrigen = new JPanel(); // Panel Origen
         pOrigen.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JPanel pDestino = new JPanel();
+        JPanel pDestino = new JPanel(); // Panel Destino
         pDestino.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JPanel pPersonas = new JPanel();
+        JPanel pPersonas = new JPanel(); // Panel Personas
         pPersonas.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         // Contenido de los paneles
-        // Panel origen
+        // Panel Origen
         JLabel lOrigen = new JLabel("Origen: ");
         JComboBox<String> cbOrigen = crearCaja();
         cbOrigen.setSize(300, 300);
         pOrigen.add(lOrigen);
         pOrigen.add(cbOrigen);
 
-        // Panel destino
+        // Panel Destino
         JLabel lDestino = new JLabel("Destino: ");
         JComboBox<String> cbDestino = crearCaja();
         pDestino.add(lDestino);
@@ -115,29 +102,58 @@ public class PuntoVentaBilletes {
         pPersonas.add(sPersonas);
         pPersonas.add(bPersonas);
 
-        // Panel trayecto
-        Border trayectoInterior = BorderFactory.createEmptyBorder(0, 35, 0, 35);
-        Border trayectoExterior = BorderFactory.createTitledBorder(null, "Trayecto", TitledBorder.CENTER, TitledBorder.TOP);
-        Border bTrayecto = BorderFactory.createCompoundBorder(trayectoExterior, trayectoInterior);
-        pTrayecto.setBorder(bTrayecto);
-        pTrayecto.setLayout(new BorderLayout());
+        // Panel Trayecto
         pTrayecto.add(pOrigen, BorderLayout.NORTH);
         pTrayecto.add(pDestino, BorderLayout.CENTER);
         pTrayecto.add(pPersonas, BorderLayout.SOUTH);
 
+        // Añade elementos a los paneles principales
+        pPrincipal1.add(pTitulo, BorderLayout.NORTH);
+        pPrincipal1.add(pDetalles, BorderLayout.WEST);
+        pPrincipal1.add(pTrayecto, BorderLayout.EAST);
+        pPrincipal1.setVisible(true);
 
-        // Sección Punto de venta de billetes
-        JLabel etiVentaBilletes=new JLabel("PUNTO DE VENTA DE BILLETES");
-        pPuntoDeVenta.add(etiVentaBilletes);
+        // Funciones del PANEL PRINCIPAL 1
+        ActionListener confirmaFecha = e -> {
+            /* boolean confirmado = JOptionPane.showConfirmDialog(); */
+        };
 
-
-        //Añade elementos a la ventana principal
-        ventanaPrincipal.add(pPuntoDeVenta, BorderLayout.NORTH);
-        ventanaPrincipal.add(pDetalles, BorderLayout.WEST);
-        ventanaPrincipal.add(pTrayecto, BorderLayout.EAST);
+        // Añadir paneles al marco
+        pGeneral.add(pPrincipal1);
+        ventanaPrincipal.add(pGeneral);
         ventanaPrincipal.setVisible(true);
     }
 
+    // Métodos de la clase
+
+    /**
+     * Toma un panel y le añade spinners con la fecha
+     *
+     * @param panel panel que va a ser cambiado
+     */
+    private void spinnerFecha(JPanel panel) {
+        panel.setLayout(new FlowLayout());
+        // Creamos el contenido del panel
+        JLabel lDia = new JLabel("Día");
+        JSpinner sDia = new JSpinner();
+        JLabel lMes = new JLabel("Mes");
+        JSpinner sMes = new JSpinner();
+        JLabel lAnio = new JLabel("Año");
+        JSpinner sAnio = new JSpinner();
+        // Añadimos el contenido al panel
+        panel.add(lDia);
+        panel.add(sDia);
+        panel.add(lMes);
+        panel.add(sMes);
+        panel.add(lAnio);
+        panel.add(sAnio);
+    }
+
+    /**
+     * Crea una JComboBox con los aeropuertos disponibles
+     *
+     * @return la JComboBox con los datos introducidos
+     */
     private JComboBox<String> crearCaja() {
         JComboBox<String> res = new JComboBox<>();
         res.addItem("---------");
