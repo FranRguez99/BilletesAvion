@@ -1,10 +1,15 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.time.Month;
+import java.time.format.TextStyle;
+import java.util.*;
+
 
 public class PuntoVentaBilletes {
 
@@ -22,11 +27,14 @@ public class PuntoVentaBilletes {
         pPrincipal1.setLayout(new BorderLayout());
 
         // PANEL PRINCIPAL 1
-
+        pPrincipal1.setSize(pGeneral.getPreferredSize());
+        pPrincipal1.setBorder(new BevelBorder(BevelBorder.LOWERED));
         // Sección Titulo
         JPanel pTitulo = new JPanel();
+        pTitulo.setBorder(new BevelBorder(BevelBorder.RAISED));
         pTitulo.setAlignmentX(0);
         JLabel etiVentaBilletes = new JLabel("PUNTO DE VENTA DE BILLETES");
+        etiVentaBilletes.setFont(new Font("Verdana",Font.BOLD,20));
         pTitulo.add(etiVentaBilletes);
 
         // Sección Detalles
@@ -46,6 +54,9 @@ public class PuntoVentaBilletes {
         // Panel Modalidad
         JRadioButton rbIda = new JRadioButton("Ida sólo");
         JRadioButton rbIdaVuelta = new JRadioButton("Ida/Vuelta");
+        ButtonGroup grpIdaVuelta=new ButtonGroup();
+        grpIdaVuelta.add(rbIda);
+        grpIdaVuelta.add(rbIdaVuelta);
         pModalidad.add(rbIda);
         pModalidad.add(rbIdaVuelta);
 
@@ -135,11 +146,17 @@ public class PuntoVentaBilletes {
         panel.setLayout(new FlowLayout());
         // Creamos el contenido del panel
         JLabel lDia = new JLabel("Día");
-        JSpinner sDia = new JSpinner();
+        JSpinner sDia = new JSpinner(new SpinnerNumberModel(1,1,12,1));
         JLabel lMes = new JLabel("Mes");
-        JSpinner sMes = new JSpinner();
+        String[] months = { "Enero", "Febrero", "Marzo", "Abril", "Mayo",
+                "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre",
+                "Diciembre" };
+        SpinnerModel model = new SpinnerListModel(listaMeses());
+        JSpinner sMes = new JSpinner(model);
+        sMes.setPreferredSize(new Dimension(88,20));
         JLabel lAnio = new JLabel("Año");
-        JSpinner sAnio = new JSpinner();
+        JSpinner sAnio = new JSpinner(new SpinnerNumberModel(2022,1980,2024,1));
+
         // Añadimos el contenido al panel
         panel.add(lDia);
         panel.add(sDia);
@@ -148,6 +165,8 @@ public class PuntoVentaBilletes {
         panel.add(lAnio);
         panel.add(sAnio);
     }
+
+
 
     /**
      * Crea una JComboBox con los aeropuertos disponibles
@@ -166,6 +185,16 @@ public class PuntoVentaBilletes {
         res.addItem("A Coruña");
         res.addItem("Santander");
         res.addItem("Asturias");
+        return res;
+    }
+
+
+    public ArrayList<String> listaMeses() {
+        Month[] meses = Month.values();
+        ArrayList<String> res = new ArrayList<>();
+        Arrays.stream(meses).forEach(m -> res.add(m.getDisplayName(TextStyle.FULL, new Locale("es", "ES"))
+                .toUpperCase(Locale.ROOT).substring(0, 1) + m.getDisplayName(TextStyle.FULL, new Locale("es", "ES"))
+                .substring(1)));
         return res;
     }
 }
